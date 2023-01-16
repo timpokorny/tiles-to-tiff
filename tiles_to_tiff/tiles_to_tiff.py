@@ -38,10 +38,15 @@ def merge_tiles(input_pattern, output_path):
 
 def georeference_raster_tile(x, y, z, path):
     bounds = tile_edges(x, y, z)
+    #print(f"Bounds: {bounds}" )
+    optionString = f"-co PHOTOMETRIC=RGB -a_ullr {bounds[0]} {bounds[1]} {bounds[2]} {bounds[3]}"
+    #print(f"Options: {optionString}" )
     gdal.Translate(os.path.join(temp_dir, f'{temp_dir}/{x}_{y}_{z}.tif'),
                    path,
+                   format='GTiff',
                    outputSRS='EPSG:4326',
                    outputBounds=bounds,
+                   options=optionString,
                    rgbExpand='rgb')
 
 def convert(tile_source, output_dir, bounding_box, zoom): 
